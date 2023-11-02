@@ -28,6 +28,9 @@ class GaussianArm:
     def generate_reward(self) -> float:
         return normal(loc=self.loc, scale=self._scale, size=None)
 
+    def __repr__(self) -> str:
+        return f"N({self.loc:.2f}, {self._scale:.2f})"
+
 
 class UniformArm:
     __slots__ = {"upper", "lower"}
@@ -35,6 +38,9 @@ class UniformArm:
     def __init__(self, upper: float, lower: float) -> None:
         self.upper = upper
         self.lower = lower
+
+    def __repr__(self) -> str:
+        return f"U({self.lower:.2f}, {self.upper:.2f})"
 
     @property
     def q_star(self) -> float:
@@ -56,3 +62,6 @@ class BernouilliArm:
 
     def generate_reward(self) -> float:
         return binomial(n=1, p=self.p, size=None)
+
+    def __repr__(self) -> str:
+        return f"B({self.p:.2f})"
