@@ -7,14 +7,14 @@ class Arm(Protocol):
         ...
 
     @property
-    def q_star() -> float:
+    def q_star(self) -> float:
         ...
 
-    def generate_reward() -> float:
+    def generate_reward(self) -> float:
         ...
 
 
-class GaussianArm:
+class GaussianArm(Arm):
     __slots__ = {"loc", "_scale"}
 
     def __init__(self, loc: float, scale: float) -> None:
@@ -32,7 +32,7 @@ class GaussianArm:
         return f"N({self.loc:.2f}, {self._scale:.2f})"
 
 
-class UniformArm:
+class UniformArm(Arm):
     __slots__ = {"upper", "lower"}
 
     def __init__(self, upper: float, lower: float) -> None:
@@ -50,7 +50,7 @@ class UniformArm:
         return uniform(low=self.lower, high=self.upper, size=None)
 
 
-class BernouilliArm:
+class BernouilliArm(Arm):
     __slots__ = {"p"}
 
     def __init__(self, p: float) -> None:

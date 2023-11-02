@@ -7,7 +7,7 @@ class Bandit:
     def __init__(self, arms: list[Arm]) -> None:
         self.__arms = arms
 
-    def __repr__(self) -> list[str]:
+    def __repr__(self) -> str:
         return "[" + ", ".join(map(str, self.__arms)) + "]"
 
     def get_reward(self, arm_number: int) -> float:
