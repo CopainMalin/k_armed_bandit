@@ -36,5 +36,5 @@ class TestBernouilliArm:
         assert 0 <= self.arm.p <= 1
 
     def test_generate_reward(self):
-        # Reward must be 0 or 1
-        assert (self.arm.generate_reward() == 0) | (self.arm.generate_reward() == 1)
+        rw = self.arm.generate_reward()
+        assert (rw == 0) | (rw == 1)
