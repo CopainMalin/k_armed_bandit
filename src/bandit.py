@@ -8,10 +8,14 @@ class Bandit:
         self.__arms = arms
 
     def __repr__(self) -> str:
-        return "[" + ", ".join(map(str, self.__arms)) + "]"
+        return f"Bandit(num_arms = {len(self.__arms)})"
 
     def __len__(self) -> int:
         return len(self.__arms)
+
+    @property
+    def arms(self) -> list[Arm]:
+        return self.__arms
 
     def get_reward(self, arm_number: int) -> float:
         return self.__arms[arm_number].generate_reward()
