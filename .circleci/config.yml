@@ -1,16 +1,9 @@
-# Python CircleCI 2.0 configuration file
-version: 2
 jobs:
   build:
     docker:
       - image: cimg/python:3.11.0
-
-    working_directory: ~/repo
-
     steps:
-      # Step 1: obtain repo from GitHub
       - checkout
-      # Step 2: create virtual env and install dependencies
       - run:
           name: install dependencies
           command: |
