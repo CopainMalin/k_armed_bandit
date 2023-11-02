@@ -93,17 +93,13 @@ class UCBAgent(Agent):
         "_upper_confidence_bound",
     }
 
-    def __init__(self, n_arms: int, c: float = 2.0, optimist: bool = False):
-        if optimist:
-            self._expected_q_stars = ones(n_arms) * 5
-            self._upper_confidence_bound = 10.0
-        else:
-            self._expected_q_stars = zeros(n_arms)
-            self._upper_confidence_bound = 0.0
+    def __init__(self, n_arms: int, c: float = 2.0):
+        self._expected_q_stars = zeros(n_arms)
+        self._upper_confidence_bound = 5.0
 
         self.c = c
         self.n_arms = n_arms
-        self._arms_taken = zeros(n_arms)
+        self._arms_taken = ones(n_arms)  # to avoid division per 0 at the init
         self._rewards_per_arms = zeros(n_arms)
         self._rewards_over_time = []
 
@@ -129,7 +125,8 @@ class UCBAgent(Agent):
 
     def pick_one_arm(self, timestep: int) -> int:
         uncertainty_component = self.c * sqrt(log(timestep) / self.arms_taken)
-        choice = argmax(self._expected_q_stars + uncertainty_component)
+        self._upper_confidence_bound = self._expected_q_stars + uncertainty_component
+        choice = argmax(self._upper_confidence_bound)
 
         return int(choice)
 
@@ -138,7 +135,7 @@ class UCBAgent(Agent):
         self._rewards_per_arms[arm] += reward
         self._rewards_over_time.append(reward)
         self._expected_q_stars[arm] += (
-            self._rewards_per_arms[arm] / self._arms_taken[arm]
+            1 / self.arms_taken[arm] * (reward - self._expected_q_stars[arm])
         )
 
     def pick_and_update(self, bandit: Bandit, timestep: int):
